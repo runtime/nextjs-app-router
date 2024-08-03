@@ -1,0 +1,17 @@
+import {openai} from '@ai-sdk/openai';
+import {streamText} from 'ai';
+
+export const maxDuration = 30;
+
+
+//This Route Handler creates a POST request endpoint at /api/chat
+export async function POST(req: Request) {
+  const {messages} = await req.json();
+
+  const result = await streamText({
+    model: openai(`gpt-4-turbo`),
+    messages,
+  });
+
+  return result.toDataStreamResponse();
+}
