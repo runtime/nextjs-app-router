@@ -8,29 +8,28 @@ import { readStreamableValue } from 'ai/rsc';
 // Allow screaming responses up to 30 seconds
 export const masDuration = 30;
 export default function Chat() {
-    const {messages, setMessages} = useState<CoreMessage[]>([]);
+    const [messages, setMessages] = useState<CoreMessage[]>([]);
     const [input, setInput] = useState('');
     const [data, setData] = useState<any>();
 
     console.log('[page] messages: ', messages);
 
-
     return (
-        <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
+        <div className="flex flex-col w-full max-w-lg py-24 mx-auto stretch">
             {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
-            {/*{messages.map((message, i) => (*/}
-            {/*    <div key={i} className="whitespace-pre-wrap">*/}
-            {/*        {message.role === 'user' ? 'User: ' : 'AI: '}*/}
-            {/*        {message.content as string}*/}
-            {/*    </div>*/}
-            {/*))}*/}
+            {messages.map((message, i) => (
+                <div key={i} className="whitespace-pre-wrap">
+                    {message.role === 'user' ? 'User: ' : 'AI: '}
+                    {message.content as string}
+                </div>
+            ))}
 
             <form
                 onSubmit={async e => {
                     e.preventDefault();
                     const newMessages: CoreMessage[] = [
                         ...messages,
-                        { content: input, role: 'user '},
+                        { content: input, role: 'user'},
                     ];
 
                     // set state wit new messages array consists of messages and content and role
@@ -52,10 +51,9 @@ export default function Chat() {
                     }
                 }}
                 >
-
                  <input
                      type={"text"}
-                     className="fixed bottom-0 w-full max-w-md p-2 mb-8 border text-gray-900 border-gray-300 margin-top 30 rounded shadow-xl"
+                     className="fixed bottom-0 w-full max-w-lg p-2 mb-8 border text-gray-900 border-gray-300 margin-top 30 rounded shadow-xl"
                      value={input}
                      onChange={e => setInput(e.target.value)}
                      placeholder="Say something..."
@@ -66,10 +64,7 @@ export default function Chat() {
     );
 }
 
-
-
-
-
+// uncomment below to use this as a client only openai LLM chatgpt 4 turbo interface
 
 // 'use client';
 //
